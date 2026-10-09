@@ -131,6 +131,26 @@
   }
   installPoints(activePoints);
 
+  const treePoints=data.points;
+  function proceduralPoints(mode){
+    const points=[];let seed=mode==='galaxy'?71:mode==='lake'?83:97;
+    const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};
+    const add=(x,y,z,structure=0)=>points.push([x,y,z,random(),structure]);
+    if(mode==='galaxy'){
+      for(let i=0;i<9500;i++){const arm=i%4,r=.06+Math.pow(random(),.7)*.95,a=arm*Math.PI/2+r*5.7+(random()-.5)*(.08+r*.35);add(Math.cos(a)*r,(random()-.5)*(.08+r*.28),Math.sin(a)*r,random()>.93?1:0);}
+      for(let i=0;i<500;i++){const a=random()*Math.PI*2,r=random()*.12;add(Math.cos(a)*r,(random()-.5)*.14,Math.sin(a)*r,1);}
+    }else if(mode==='lake'){
+      for(let i=0;i<3600;i++){const x=(random()-.5)*1.9,z=(random()-.5)*1.25;add(x,-.30+Math.sin(x*17+z*8)*.004,z,0);}
+      for(let i=0;i<5000;i++){const x=(random()-.5)*2.1,z=(random()-.5)*1.15;const ridge=Math.max(0,.7-Math.abs(x+.46))*Math.max(0,.72-z)*.85+Math.max(0,.48-Math.abs(x-.55))*Math.max(0,.5-z)*.65;add(x,-.29+ridge+(random()-.5)*.025,z-.2,1);}
+      for(let i=0;i<1400;i++){const a=random()*Math.PI*2,r=.08+random()*.85;add(Math.cos(a)*r,-.30+Math.sin(r*22)*.008,Math.sin(a)*r*.65,0);}
+    }else{
+      for(let i=0;i<3200;i++){const x=(random()-.5)*1.8,z=(random()-.5)*.85;add(x,-.46+(random()-.5)*.008,z,0);}
+      for(let side of [-1,1])for(let house=0;house<8;house++){const cx=(house-3.5)*.22,cz=side*(.43+random()*.12),height=.23+random()*.34;for(let i=0;i<400;i++){const face=Math.floor(random()*4),u=(random()-.5)*.19,y=-.46+random()*height;add(cx+(face<2?u:(face===2?-.10:.10)),y,cz+(face>=2?u:(face===0?-.10:.10)),1);}for(let i=0;i<90;i++)add(cx+(random()-.5)*.22,-.46+height+Math.abs(random()-.5)*.12,cz+(random()-.5)*.22,1);}
+    }
+    return points;
+  }
+  function setScene(mode){const type=['tree','street','galaxy','lake'].includes(mode)?mode:'tree';if(mount.dataset.scene===type)return;sourceMode=type==='street'&&window.STREET_POINTS?.points?.length?'user FBX street':type==='tree'?'FBX topology cache':`procedural ${type}`;installPoints(type==='tree'?treePoints:type==='street'&&window.STREET_POINTS?.points?.length?window.STREET_POINTS.points:proceduralPoints(type));mount.dataset.scene=type;}
+
   function sampleLiveFBX(object) {
     object.updateMatrixWorld(true);
     const box = new THREE.Box3().setFromObject(object);
@@ -220,6 +240,5 @@
   }
   requestAnimationFrame(frame);
   document.documentElement.classList.add('three-ready');
-  window.WorldTree3D={active:true,ready:true,setAudioLevel,setWindLevel,setTheme,gestureZoom,capture,getCanvas(){return renderer.domElement;},projectAnchor,findNearestAnchor,getCameraState,setEnabled(value){controls.enabled=Boolean(value);},get pointCount(){return activePoints.length;},get source(){return sourceMode;},reset(){camera.position.set(.08,.02,3.05);controls.target.set(0,.02,0);controls.update();}};
+  window.WorldTree3D={active:true,ready:true,setScene,setAudioLevel,setWindLevel,setTheme,gestureZoom,capture,getCanvas(){return renderer.domElement;},projectAnchor,findNearestAnchor,getCameraState,setEnabled(value){controls.enabled=Boolean(value);},get pointCount(){return activePoints.length;},get source(){return sourceMode;},reset(){camera.position.set(.08,.02,3.05);controls.target.set(0,.02,0);controls.update();}};
 })();
-

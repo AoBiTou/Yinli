@@ -7,7 +7,7 @@ const { exec } = require('child_process');
 
 const root = __dirname;
 const dataRoot = path.join(path.resolve(process.env.YINLI_DATA_DIR || path.join(root, '.yinli-data')), 'gifts');
-const publicFiles = new Set(['index.html','styles.css','yinli.css','yinli-polish.css','app.js','yinli-studio.js','landing-particles.js','three-scene.js']);
+const publicFiles = new Set(['index.html','styles.css','yinli.css','yinli-polish.css','app.js','yinli-studio.js','qq-demo.js','landing-particles.js','three-scene.js']);
 const port = Number(process.env.PORT || 4173);
 const maxAssetBytes = 200 * 1024 * 1024;
 const maxGiftBytes = 500 * 1024 * 1024;
@@ -95,4 +95,3 @@ server.listen(port,'0.0.0.0',()=>{
   console.log(`礼物数据目录：${dataRoot}`);
   if(process.env.OPEN_BROWSER==='1'&&process.platform==='win32')exec(`start "" "http://localhost:${port}"`);
 });
-

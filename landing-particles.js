@@ -34,4 +34,3 @@
   new IntersectionObserver(entries=>{visible=entries[0]?.isIntersecting!==false;if(visible&&!reduced){cancelAnimationFrame(frame);frame=requestAnimationFrame(draw);}else cancelAnimationFrame(frame);},{threshold:.02}).observe(canvas);
   resize();draw();
 })();
-

@@ -17,8 +17,8 @@
     <div class="entry-stars" aria-hidden="true"></div>
     <nav class="landing-nav">
       <a class="landing-brand" href="#landing-top"><b>音礼</b><small>YIN LI</small></a>
-      <div><a href="#landing-story">什么是音礼</a><a href="#landing-flow">如何创作</a><a href="#landing-scenes">礼物示例</a></div>
-      <button type="button" data-yinli-entry="create">创作一份记忆</button>
+      <div class="landing-nav-links"><a href="#landing-story">什么是音礼</a><a href="#landing-flow">如何创作</a><a href="#landing-scenes">礼物示例</a></div>
+      <div class="landing-nav-actions"><button id="qq-demo-entry" class="qq-demo-trigger" type="button" aria-label="同步 QQ 音乐好友"><img class="qq-logo" src="./assets/brand/qq-music.png" alt="">同步QQ音乐好友</button><button class="landing-create" type="button" data-yinli-entry="create">创作一份记忆</button></div>
     </nav>
     <div class="landing-scroll">
       <section id="landing-top" class="landing-hero">
@@ -30,6 +30,7 @@
             <button type="button" class="landing-primary" data-yinli-entry="create">创作一份记忆</button>
             <button type="button" class="landing-secondary" data-yinli-entry="open">打开一份记忆</button>
           </div>
+          <button id="qq-demo-entry-mobile" class="qq-demo-trigger landing-qq-mobile" type="button"><img class="qq-logo" src="./assets/brand/qq-music.png" alt="">同步QQ音乐好友</button>
           <button id="enter-world" class="landing-world-link" type="button" hidden>进入我的世界 <span>→</span></button>
           <div id="entry-loader" class="entry-loader" role="status" aria-live="polite"><span><i id="entry-load-progress"></i></span><small id="entry-load-label">正在读取树的拓扑</small></div>
         </div>
@@ -64,6 +65,7 @@
     <header class="world-nav ui-layer">
       <button class="wordmark world-brand" data-action="home" aria-label="音礼世界首页"><b>音礼</b><small>YIN LI WORLD</small></button>
       <div class="nav-actions">
+        <label class="scene-switcher"><span class="sr-only">切换场景</span><select id="world-scene-select" aria-label="切换场景"><option value="tree">世界树</option><option value="street">街道</option><option value="galaxy">银河</option><option value="lake">山与湖泊</option></select></label>
         <button id="weather-toggle" class="quiet-button compact-control" data-action="weather" data-i18n="weatherClear">晴朗 · 微风</button>
         <button id="theme-toggle" class="icon-button" data-action="theme" aria-label="切换黑夜模式" title="昼夜模式">
           <svg viewBox="0 0 24 24"><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"/></svg>
@@ -120,7 +122,7 @@
 
   <section id="memory-view" class="memory-view" hidden aria-label="镜子记忆空间">
     <button class="memory-back ui-layer" data-action="back-world" aria-label="返回世界树">
-      <svg viewBox="0 0 24 24"><path d="m10 6-6 6 6 6M4 12h16"/></svg>
+      <svg viewBox="0 0 24 24"><path d="m10 6-6 6 6 6M4 12h16"/></svg><span>返回</span>
     </button>
 
     <div class="memory-atmosphere" aria-hidden="true"></div>
@@ -134,7 +136,7 @@
         <span id="scan-status" class="scan-status">等待记忆</span>
         <button id="photo-cycle" class="photo-cycle" type="button" aria-label="切换照片" hidden>01 / 01</button>
       </div>
-      <div class="memory-caption"><b id="memory-caption-title">未命名记忆</b><span id="memory-caption-date"></span></div>
+      <div class="memory-caption"><button id="memory-caption-title" type="button" aria-label="修改记忆名称">未命名记忆</button><button id="memory-caption-date" type="button" aria-label="修改记忆日期">选择日期</button><div id="memory-caption-edit" class="memory-caption-edit" hidden><label>记忆名称<input id="memory-caption-title-input" type="text" maxlength="36" placeholder="未命名记忆"></label><label>日期<input id="memory-caption-date-input" type="date"></label><button id="memory-caption-save" type="button">保存</button></div></div>
     </div>
 
     <aside id="memory-editor" class="memory-editor ui-layer" aria-label="编辑这段记忆">
@@ -189,7 +191,7 @@
 
   <section id="archive-view" class="archive-view" hidden aria-label="世界树档案">
     <header>
-      <button class="memory-back" data-action="close-archive" aria-label="返回世界树"><svg viewBox="0 0 24 24"><path d="m10 6-6 6 6 6M4 12h16"/></svg></button>
+      <button class="memory-back" data-action="close-archive" aria-label="返回世界树"><svg viewBox="0 0 24 24"><path d="m10 6-6 6 6 6M4 12h16"/></svg><span>返回</span></button>
       <div><small id="archive-kicker">WORLD MEMORY ARCHIVE</small><h2 data-i18n="myWorldMemories">我的世界记忆录</h2></div>
       <span id="archive-count"><b>04</b><small>已收录 4 段音乐记忆</small></span>
     </header>
@@ -223,10 +225,11 @@
   <script src="./vendor/three/three.min.js"></script>
   <script src="./vendor/three/OrbitControls.js"></script>
   <script src="./assets/models/tree-points.js"></script>
+  <script src="./assets/models/street-points.js"></script>
   <script src="./landing-particles.js?v=20261008"></script>
   <script src="./three-scene.js?v=20261008-worlds"></script>
   <script src="./app.js?v=20261008-world-cover"></script>
   <script src="./yinli-studio.js?v=20261008-single-flow"></script>
+  <script src="./qq-demo.js"></script>
 </body>
 </html>
-

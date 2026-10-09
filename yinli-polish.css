@@ -1,16 +1,34 @@
 /* Yinli finishing pass: compact editing, quiet archive, legible dialogs. */
 .yinli-timeline:not(.is-collapsed){height:25vh!important;max-height:25vh!important;min-height:0!important;bottom:0!important;box-sizing:border-box!important;overflow:visible!important}
-.yinli-timeline:not(.is-collapsed) .timeline-tracks{max-height:max(30px,calc(25vh - 124px));overflow-y:auto;scrollbar-width:thin}
+.yinli-timeline:not(.is-collapsed) .timeline-tracks{max-height:none;overflow-y:visible}
 .yinli-timeline:not(.is-collapsed) .timeline-toolbar{flex-wrap:nowrap!important;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin}
 .yinli-timeline:not(.is-collapsed) .timeline-toolbar>*{flex:none}
-.yinli-timeline:not(.is-collapsed) .yinli-inspector{max-height:55px;overflow-y:auto;scrollbar-width:thin}
+.yinli-timeline:not(.is-collapsed) .yinli-inspector{height:34px!important;min-height:34px!important;max-height:34px!important;margin:0 0 2px!important;padding:0!important;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;flex-wrap:nowrap!important}
 .yinli-creator-mode:has(.yinli-timeline:not(.is-collapsed)) .world-actions{bottom:calc(25vh + 14px)!important}
-@media(max-height:700px){.yinli-timeline:not(.is-collapsed) .timeline-tracks{max-height:max(30px,calc(25vh - 95px))}}
+@media(max-height:700px){.yinli-timeline:not(.is-collapsed) .timeline-tracks{max-height:none}}
 @media(max-width:560px){.yinli-timeline:not(.is-collapsed) .timeline-tracks,.yinli-timeline:not(.is-collapsed) .timeline-ruler{min-width:0!important}.yinli-timeline:not(.is-collapsed) .timeline-toolbar{max-width:100%}}
 
-.yinli-media-item.image.particle-ready canvas{inset:0!important;left:0!important;top:0!important;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important}
+.yinli-media-item.image.particle-ready canvas{inset:auto!important;left:-35%!important;top:-35%!important;width:170%!important;height:170%!important;max-width:none!important;max-height:none!important;background:transparent!important}
 .yinli-media-item.image.particle-ready.particle-active img{opacity:0!important}
 .yinli-media-item.image.particle-ready.particle-active canvas{opacity:1!important}
+.yinli-creator-mode .mirror-layer,.yinli-receiver-mode .mirror-layer{z-index:9;pointer-events:none}
+.yinli-creator-mode .memory-mirror,.yinli-receiver-mode .memory-mirror{pointer-events:auto}
+.yinli-timeline:not(.is-collapsed){padding-top:8px!important;padding-bottom:8px!important}
+.yinli-timeline:not(.is-collapsed) .timeline-toolbar{margin-bottom:4px!important}
+.yinli-timeline:not(.is-collapsed) .timeline-track{min-height:24px!important}
+.yinli-timeline:not(.is-collapsed) .track-lane{height:21px!important}
+
+/* The QQ Music contact flow is a local prototype with the same glass palette as the site. */
+#qq-demo-entry{border:1px solid rgba(46,62,65,.19);border-radius:999px;background:transparent;color:inherit;padding:9px 13px;font:inherit;cursor:pointer;white-space:nowrap}
+.landing-qq-mobile{display:none;align-items:center;gap:4px;margin-top:22px;padding:10px 15px;border:1px solid rgba(46,62,65,.22);border-radius:999px;background:transparent;color:#25363b;font:inherit;cursor:pointer;scroll-margin-top:110px}
+@media(max-width:900px){.landing-qq-mobile{display:inline-flex}}
+.qq-demo-modal[hidden],#qq-echo-button[hidden]{display:none!important}
+.qq-demo-modal{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:18px;background:rgba(14,23,27,.58);backdrop-filter:blur(8px)}
+.qq-demo-card{position:relative;width:min(460px,100%);max-height:min(78vh,740px);overflow:auto;padding:28px;border:1px solid rgba(50,70,75,.22);border-radius:26px;color:#22353b;background:#f4f6f4;box-shadow:0 28px 90px rgba(15,27,31,.28)}
+.night-mode .qq-demo-card{color:#eef4f1;background:#121d22;border-color:rgba(232,242,238,.22)}
+.qq-demo-card>small{display:flex;align-items:center;letter-spacing:.08em;color:#60737a}.qq-demo-card h2{font-size:25px;margin:15px 0 8px}.qq-demo-card p{line-height:1.6;color:inherit;opacity:.75}.qq-demo-card label{display:grid;gap:7px;margin:14px 0;color:inherit}.qq-demo-card input,.qq-demo-card textarea,.qq-share-demo select{width:100%;padding:11px;border:1px solid rgba(55,75,82,.25);border-radius:12px;background:rgba(255,255,255,.66);color:#23343a;font:inherit}.night-mode .qq-demo-card input,.night-mode .qq-demo-card textarea,.night-mode .qq-share-demo select{background:#213138;color:#eef4f1;border-color:#74858b}.qq-demo-card button,.qq-share-demo button{border:1px solid rgba(49,68,75,.25);border-radius:999px;padding:10px 16px;background:transparent;color:inherit;cursor:pointer}.qq-demo-card .qq-demo-primary,.qq-share-demo button{background:#1a2b31;color:#fff}.night-mode .qq-demo-card .qq-demo-primary,.night-mode .qq-share-demo button{background:#d8b886;color:#1b272a}.qq-demo-close{position:absolute;right:20px;top:18px}.qq-demo-note{border-top:1px solid rgba(73,91,96,.18);padding-top:14px;font-size:12px}.qq-demo-friends{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.qq-demo-friends span{border:1px solid rgba(61,78,84,.2);border-radius:999px;padding:6px 10px;font-size:12px}.qq-demo-inbox{display:grid;gap:10px}.qq-demo-message{border:1px solid rgba(61,78,84,.2);border-radius:16px;padding:12px}.qq-demo-message b,.qq-demo-message small{display:block}.qq-demo-message small{opacity:.6;margin-top:3px}.qq-demo-message p{margin:8px 0}.qq-demo-message audio{width:100%}.qq-echo-actions{display:flex;align-items:center;gap:12px;margin-bottom:18px}.qq-share-demo{display:grid;gap:8px;margin-top:18px;padding:14px;border:1px solid rgba(55,75,82,.18);border-radius:16px}.qq-share-demo label{display:grid;gap:7px}.qq-share-demo small{opacity:.7}#qq-echo-button{position:fixed;right:24px;bottom:96px;z-index:38;padding:10px 17px;border:1px solid rgba(45,61,67,.22);border-radius:999px;background:#f3f5f2;color:#25353a;box-shadow:0 12px 32px rgba(20,30,35,.12);cursor:pointer}.night-mode #qq-echo-button{background:#1a272d;color:#ecf3f0;border-color:rgba(255,255,255,.24)}
+.scene-switcher{position:fixed;left:50%;top:91px;z-index:22;transform:translateX(-50%);pointer-events:auto}.scene-switcher select{max-width:136px;border:1px solid rgba(42,59,65,.25);border-radius:999px;padding:10px 26px 10px 15px;background:rgba(248,250,248,.86);color:#25363b;font:inherit;cursor:pointer;box-shadow:0 10px 28px rgba(36,51,56,.08)}.night-mode .scene-switcher select{background:#121d22;color:#eef4f1;border-color:rgba(255,255,255,.3)}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.qq-demo-identity{display:flex!important;align-items:center;justify-content:space-between;gap:12px;font-size:12px}.qq-demo-identity select{max-width:170px}
 
 .yinli-publish-dialog::before{background:rgba(248,250,249,.68)!important}
 .night-mode .yinli-publish-dialog::before{background:rgba(0,0,0,.84)!important;backdrop-filter:blur(9px)!important}
@@ -18,7 +36,8 @@
 .night-mode .yinli-publish-dialog h2,.night-mode .yinli-publish-dialog p,.night-mode .yinli-publish-dialog label{color:#f9f8f4!important;opacity:1!important}
 .night-mode .yinli-publish-dialog input,.night-mode .yinli-publish-dialog textarea{background:#1d2a30!important;color:#fff!important;border-color:#76848a!important}
 .night-mode .yinli-publish-dialog input::placeholder,.night-mode .yinli-publish-dialog textarea::placeholder{color:#c4d1d3!important}
-.night-mode .yinli-publish-dialog button:not(.panel-close){color:#152027!important;background:#e3be82!important}
+.night-mode .yinli-publish-dialog button.primary,.night-mode .yinli-publish-dialog .qq-share-row button{color:#152027!important;background:#e3be82!important}
+.night-mode .yinli-publish-dialog .dialog-close{color:#f9f8f4!important;background:transparent!important}
 
 .world-gallery{background:linear-gradient(180deg,transparent 0 8%,#e0e3e1 8% 92%,transparent 92%)!important}
 .world-card,.world-card-new{background:#e9ecea!important;color:#26343a!important;border-color:rgba(37,54,62,.24)!important;box-shadow:none!important}
@@ -36,6 +55,76 @@
 .world-card-delete[data-confirm="yes"]{color:#a34c45;border-color:#b56d60}
 .night-mode .world-card-delete{color:#f1f4f2;background:#202b30;border-color:rgba(255,255,255,.35)}
 
+/* Keep the QQ Music entry next to the create action. */
+.landing-nav{grid-template-columns:auto minmax(0,1fr) auto;column-gap:clamp(18px,3vw,44px)}
+.landing-nav>.landing-nav-links{display:flex;justify-content:center;gap:clamp(12px,2.2vw,35px);min-width:0}
+.landing-nav>.landing-nav-actions{display:flex;justify-content:flex-end;align-items:center;gap:12px;white-space:nowrap}
+.landing-nav-actions>.landing-create{min-height:44px;padding:0 20px;border:1px solid #172329;border-radius:99px;color:#fff;background:#172329;font:inherit;font-size:13px;cursor:pointer}
+.qq-demo-trigger{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:44px}
+.qq-logo{display:inline-block;flex:none;width:23px;height:23px;object-fit:contain;vertical-align:middle}
+.landing-qq-mobile{display:none}
+@media(max-width:1050px){.landing-nav>.landing-nav-links{gap:12px}.landing-nav a{font-size:11px}.landing-nav-actions>.landing-create{padding:0 15px}.landing-nav{padding-inline:24px}}
+@media(max-width:900px){.landing-nav{grid-template-columns:auto 1fr}.landing-nav>.landing-nav-links{display:none}.landing-nav>.landing-nav-actions{display:flex}.landing-qq-mobile{display:inline-flex}}
+@media(max-width:560px){.landing-nav{padding-inline:18px}.landing-nav-actions>#qq-demo-entry{display:none}.landing-nav-actions>.landing-create{min-height:42px;font-size:12px}.landing-qq-mobile{display:inline-flex}}
+
+/* The caption belongs to the image, in both creator and viewer views. */
+.memory-rig{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.memory-caption{position:relative;left:auto;bottom:auto;transform:none;width:min(34vw,390px);z-index:10;text-align:left}
+.memory-caption>button{display:block;width:100%;padding:3px 0;border:0;background:none;color:inherit;text-align:left;font:inherit;cursor:pointer}
+.memory-caption>button[hidden]{display:none}
+.memory-caption>button:first-child{font-size:14px;font-weight:500}
+.memory-caption>button:nth-child(2){margin-top:2px;font-size:11px;letter-spacing:.04em;color:#5d6f75}
+.memory-caption>button:disabled{cursor:default;opacity:1}
+.memory-caption>button:not(:disabled):hover{text-decoration:underline;text-underline-offset:3px}
+.memory-caption-edit{position:absolute;left:0;top:auto;bottom:calc(100% + 9px);z-index:12;width:min(300px,85vw);padding:14px;border:1px solid rgba(41,59,66,.2);border-radius:16px;background:#f7f9f7;box-shadow:0 16px 42px rgba(20,34,40,.18)}
+.memory-caption-edit[hidden]{display:none!important}
+.memory-caption-edit label{display:grid;gap:4px;margin-bottom:10px;font-size:11px;color:#3b5158}
+.memory-caption-edit input{min-width:0;width:100%;height:38px;padding:6px 9px;border:1px solid rgba(41,59,66,.28);border-radius:8px;color:#17272d;background:#fff;font:inherit;font-size:13px}
+.memory-caption-edit>button{padding:8px 18px;border:0;border-radius:99px;color:#fff;background:#17272d;cursor:pointer}
+.yinli-receiver-mode .memory-caption{width:min(54vw,520px)}
+.memory-view .memory-back,.archive-view .memory-back{display:inline-flex;align-items:center;justify-content:center;gap:7px;width:auto;min-width:82px;height:42px;padding:0 14px;border:1px solid rgba(31,47,53,.22);border-radius:99px;background:rgba(248,250,248,.91);color:#1d3036!important;box-shadow:0 8px 28px rgba(24,39,45,.1);font-size:13px;font-weight:500;cursor:pointer}
+.memory-back svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.night-mode .memory-view .memory-back,.night-mode .archive-view .memory-back{color:#f5f8f5!important;background:#17262c;border-color:rgba(236,245,241,.29)}
+.night-mode .memory-caption>button:nth-child(2){color:#bdc9cb}
+.night-mode .memory-caption-edit{background:#17252b;border-color:#697d83}.night-mode .memory-caption-edit label{color:#e8f0ed}
+@media(max-width:680px){.memory-view{overflow-y:auto;overflow-x:hidden}.memory-rig,.memory-view.active .memory-rig{position:relative;left:auto;top:auto;width:100%;height:auto;min-height:0;padding:95px 12px 22px;transform:none}.focus-mirror{flex:none;width:min(78vw,340px)}.memory-caption{width:min(78vw,340px)}.yinli-receiver-mode .memory-rig{left:auto;height:auto}.yinli-receiver-mode .memory-caption{width:min(80vw,430px)}.memory-view .memory-back{left:12px;top:12px}.rig-line{display:none}}
+
+/* Familiar message list and conversation, while keeping the site's quiet palette. */
+.qq-demo-modal{padding:16px;overscroll-behavior:contain}
+.qq-demo-card{width:min(760px,100%);max-height:min(88dvh,760px);padding:22px;overflow:hidden;display:flex;flex-direction:column}
+.qq-demo-card:not(.qq-chat-card){width:min(430px,100%);overflow:auto}
+.qq-demo-brand{display:flex;align-items:center;gap:8px;min-height:30px;color:#4b646b;font-size:13px;font-weight:600}
+.night-mode .qq-demo-brand{color:#e0e9e6}
+.qq-demo-close{z-index:3;display:grid;place-items:center;width:38px;height:38px;padding:0;font-size:22px}
+.qq-demo-close{font-size:0!important;line-height:0}
+.qq-demo-close::before,.qq-demo-close::after{content:"";grid-area:1/1;width:14px;height:1.5px;border-radius:1px;background:currentColor;transform:rotate(45deg)}
+.qq-demo-close::after{transform:rotate(-45deg)}
+.qq-login{padding:8px 0 4px}.qq-login h2{font-size:25px}.qq-login>small{display:block;margin-top:15px;color:#66777c;font-size:11px}
+.qq-chat-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 44px 16px 0}
+.qq-chat-head h2{margin:0 0 2px;font-size:23px}.qq-chat-head small{font-size:11px;color:#738389}
+.qq-identity{display:flex!important;align-items:center;gap:6px;margin:0!important}.qq-identity select{max-width:105px;min-height:36px;padding:5px 22px 5px 7px;border:1px solid rgba(55,75,82,.25);border-radius:99px;background:transparent;color:inherit;font:inherit;cursor:pointer}
+.qq-avatar{display:inline-grid;flex:none;place-items:center;width:34px;height:34px;border-radius:50%;color:#fff;background:linear-gradient(135deg,#8caeb0,#486e76);font-size:13px}
+.qq-chat-layout{display:grid;grid-template-columns:245px minmax(0,1fr);min-height:0;height:min(56dvh,500px);border:1px solid rgba(55,75,82,.16);border-radius:17px;overflow:hidden;background:rgba(255,255,255,.38)}
+.night-mode .qq-chat-layout{background:#19282e;border-color:rgba(230,240,236,.18)}
+.qq-contact-pane{min-height:0;overflow:auto;border-right:1px solid rgba(55,75,82,.14);background:rgba(217,228,228,.35)}
+.night-mode .qq-contact-pane{background:#17252b;border-color:rgba(230,240,236,.16)}
+.qq-pane-title{padding:13px 15px 8px;color:#64787d;font-size:11px;font-weight:600}
+.qq-contact{display:flex;align-items:center;gap:9px;width:100%;min-height:67px;padding:9px 11px;border:0;border-bottom:1px solid rgba(55,75,82,.09)!important;border-radius:0!important;text-align:left;background:transparent;cursor:pointer}
+.qq-contact.is-active,.qq-contact:hover{background:rgba(154,189,192,.28)}
+.qq-contact-copy{display:grid;min-width:0;flex:1;gap:3px}.qq-contact-copy b{font-size:13px}.qq-contact-copy small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;opacity:.64}.qq-contact time{align-self:flex-start;font-size:10px;opacity:.55}
+.qq-conversation-pane{display:flex;flex-direction:column;min-width:0;min-height:0}.qq-conversation-pane>header{display:flex;align-items:center;gap:8px;min-height:53px;padding:8px 12px;border-bottom:1px solid rgba(55,75,82,.13)}.qq-conversation-pane>header .qq-avatar{width:29px;height:29px}.qq-conversation-pane>header b{font-size:13px}
+.qq-conversation-scroll{flex:1;min-height:0;overflow:auto;padding:16px 14px}.qq-chat-empty{margin:auto;padding:25px;text-align:center;color:#718187;font-size:12px}
+.qq-bubble-row{display:flex;align-items:flex-start;gap:7px;margin-bottom:14px}.qq-bubble-row.own{flex-direction:row-reverse}.qq-bubble-row .qq-avatar{width:27px;height:27px;font-size:11px}.qq-bubble{max-width:86%;padding:9px 11px;border:1px solid rgba(55,75,82,.11);border-radius:13px;background:#fff;overflow-wrap:anywhere}.qq-bubble-row.own .qq-bubble{background:#d7edda}.night-mode .qq-bubble{background:#293b41}.night-mode .qq-bubble-row.own .qq-bubble{background:#355349}.qq-bubble small{display:block;font-size:10px;opacity:.57}.qq-bubble p{margin:4px 0 0;opacity:1;font-size:12px;line-height:1.55}.qq-bubble audio{display:block;max-width:100%;margin-top:7px}.qq-gift-link{display:flex;justify-content:space-between;align-items:center;gap:20px;width:100%;margin-top:8px!important;padding:11px!important;border:1px solid rgba(44,75,79,.18)!important;border-radius:10px!important;background:rgba(248,250,249,.7)!important;color:#1e383d!important;text-align:left;font-size:12px}.night-mode .qq-gift-link{background:#1c3035!important;color:#edf5f1!important}
+.qq-compose{padding:10px;border-top:1px solid rgba(55,75,82,.13)}.qq-compose textarea{display:block;min-height:47px;max-height:100px;resize:vertical;margin:0!important;font-size:12px}.qq-compose>div{display:flex;align-items:center;gap:8px;margin-top:7px}.qq-compose>div span{flex:1;min-width:0;font-size:10px;color:#64777b}.qq-compose button{padding:6px 12px;min-height:31px;font-size:11px}.qq-local-note{padding-top:9px;color:#78898c;font-size:10px;text-align:right}.qq-mobile-back{display:none}
+.qq-share-demo{margin-top:14px;padding:13px}.qq-share-heading{display:flex;align-items:center;gap:8px;font-size:13px}.qq-share-row{display:flex;gap:9px;align-items:center}.qq-share-row label{flex:1;min-width:0;margin:0!important}.qq-share-row button{min-width:70px;min-height:42px}.qq-share-demo>small{font-size:10px}
+.yinli-publish-dialog>.qq-share-demo{display:grid;gap:10px}.yinli-publish-dialog>.qq-share-demo .qq-share-row{display:flex;margin:0}.yinli-publish-dialog>.qq-share-demo label{min-width:0}.yinli-publish-dialog>.qq-share-demo select{width:100%;min-height:42px;padding:8px 12px;border:1px solid rgba(55,75,82,.25);border-radius:10px;color:#23343a;background:#fff;font:inherit;font-size:13px}.night-mode .yinli-publish-dialog>.qq-share-demo select{color:#eef4f1;background:#213138;border-color:#74858b}
+@media(max-width:600px){.yinli-publish-dialog{width:calc(100% - 24px);max-height:calc(100dvh - 24px);overflow:auto;padding:22px 17px}.yinli-publish-dialog h2{font-size:24px}.yinli-publish-dialog p{font-size:13px;line-height:1.55}.yinli-publish-dialog input{font-size:12px}.yinli-publish-dialog>div:not(.qq-share-demo){flex-wrap:wrap}.yinli-publish-dialog>div:not(.qq-share-demo)>button{flex:1;min-width:110px}}
+@media(max-width:600px){.scene-switcher{top:126px}.yinli-role-chip{top:72px;left:12px;right:12px;width:max-content;max-width:calc(100vw - 24px)}.yinli-role-chip>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.world-actions{max-width:calc(100vw - 28px);gap:6px;z-index:48}.yinli-creator-mode:has(.yinli-timeline:not(.is-collapsed)) .world-actions{bottom:calc(25dvh + 52px)!important}.world-actions .quiet-button{min-height:40px;padding-inline:10px}.world-actions .primary-action{min-height:40px;padding-right:12px}.yinli-timeline .timeline-toolbar{position:relative}.yinli-timeline .timeline-toolbar .timeline-publish{position:sticky;right:0;z-index:4;flex:none;margin-left:auto;box-shadow:-10px 0 12px rgba(248,250,247,.9)}.night-mode .yinli-timeline .timeline-toolbar .timeline-publish{box-shadow:-10px 0 12px rgba(12,20,24,.9)}}
+body.memory-open .yinli-timeline,body.memory-open .yinli-inspector,body.memory-open .world-actions,body.memory-open .world-nav,body.memory-open .yinli-role-chip,body.memory-open .scene-switcher{visibility:hidden;pointer-events:none}
+@media(max-width:680px){body.memory-open .yinli-upload-panel{left:50%;top:calc(100px + min(78vw,340px) + 92px);width:min(78vw,340px);transform:translateX(-50%)}body.memory-open .yinli-upload-panel button{min-height:44px;text-align:center}}
+@media(max-width:600px){.qq-demo-modal{padding:0;align-items:stretch}.qq-demo-card,.qq-demo-card:not(.qq-chat-card){width:100%;max-height:100dvh;height:100dvh;border:0;border-radius:0;padding:calc(16px + env(safe-area-inset-top)) 14px calc(12px + env(safe-area-inset-bottom))}.qq-chat-head{padding:10px 38px 12px 0}.qq-chat-layout{display:block;flex:1;height:auto}.qq-contact-pane,.qq-conversation-pane{height:100%}.qq-conversation-pane{display:none}.qq-chat-layout.show-conversation .qq-contact-pane{display:none}.qq-chat-layout.show-conversation .qq-conversation-pane{display:flex}.qq-mobile-back{display:inline-grid;place-items:center;width:30px;height:30px;padding:0!important;border:0!important;background:transparent!important;color:inherit!important;font-size:20px}.qq-compose{padding:8px}.qq-bubble{max-width:80%}.qq-local-note{text-align:center}}
+@media(max-width:600px){.qq-chat-head>div>small{display:none}.qq-identity select{max-width:min(140px,calc(100vw - 190px));min-width:90px}}
+
 .yinli-receiver-mode .yinli-viewer-controls{transition:opacity .2s ease,transform .2s ease}
 :fullscreen .yinli-receiver-mode .yinli-viewer-controls:not(.is-visible),.yinli-receiver-mode:fullscreen .yinli-viewer-controls:not(.is-visible){opacity:0!important;transform:translate(-50%,18px)!important;pointer-events:none!important}
 .yinli-viewer-controls .viewer-play{flex:none;min-width:56px;min-height:34px;border-radius:18px;cursor:pointer}
@@ -47,4 +136,3 @@
 .archive-role-tabs{display:flex;justify-content:center;gap:8px;padding:14px 20px 0}
 .archive-role-tabs button{border:1px solid currentColor;border-radius:999px;padding:8px 18px;background:transparent;color:inherit;opacity:.7;cursor:pointer}
 .archive-role-tabs button[aria-selected="true"]{opacity:1;background:rgba(125,150,155,.18)}
-

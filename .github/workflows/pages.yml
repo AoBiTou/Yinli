@@ -20,10 +20,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: Prepare static preview
         run: |
-          mkdir -p _site/assets/models _site/assets/scene _site/vendor/three
-          cp index.html styles.css yinli.css yinli-polish.css app.js yinli-studio.js landing-particles.js three-scene.js _site/
-          cp assets/models/tree-points.js _site/assets/models/
+          mkdir -p _site/assets/models _site/assets/scene _site/assets/brand _site/vendor/three
+          cp index.html styles.css yinli.css yinli-polish.css app.js yinli-studio.js qq-demo.js landing-particles.js three-scene.js _site/
+          cp assets/models/tree-points.js assets/models/street-points.js _site/assets/models/
           cp assets/scene/mirror-forest.png _site/assets/scene/
+          cp assets/brand/qq-music.png _site/assets/brand/
           cp vendor/three/three.min.js vendor/three/OrbitControls.js _site/vendor/three/
           touch _site/.nojekyll
       - uses: actions/configure-pages@v5
@@ -32,4 +33,3 @@ jobs:
           path: _site
       - id: deployment
         uses: actions/deploy-pages@v4
-

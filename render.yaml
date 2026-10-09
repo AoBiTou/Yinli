@@ -15,4 +15,3 @@ services:
       name: yinli-gifts
       mountPath: /var/data
       sizeGB: 1
-

@@ -177,7 +177,7 @@ function updateArchiveCount(){const node=$('archive-count');if(!node)return;cons
       button.style.setProperty('--tilt', `${index % 2 ? -3 : 3}deg`);
       button.style.scale = mirror.size || 1;
       button.setAttribute('aria-label', `打开记忆：${mirror.title || '未命名记忆'}`);
-      button.innerHTML = `<span class="mirror-body">${mirrorImage(mirror) ? `<img src="${mirrorImage(mirror)}" alt="">` : ''}<i class="reflection"></i>${mirror.yinliProjectId?`<em class="mirror-echo-state">${mirror.yinliStatus==='received'?'收到的音礼':'音礼创作'}</em>`:''}</span><span class="mirror-label">${String(index + 1).padStart(2, '0')} · ${escapeHtml(mirror.title || '未命名记忆')}</span>`;
+      button.innerHTML = `<span class="mirror-body">${mirrorImage(mirror) ? `<img src="${mirrorImage(mirror)}" alt="">` : ''}<i class="reflection"></i></span><span class="mirror-label">${String(index + 1).padStart(2, '0')} · ${escapeHtml(mirror.title || '未命名记忆')}</span>`;
       button.addEventListener('mouseenter', () => {
         if(!document.body.classList.contains('yinli-creator-mode'))playChime();
         fishlineLayer.querySelector(`[data-mirror="${CSS.escape(mirror.id)}"]`)?.classList.add('active');
@@ -261,7 +261,8 @@ function renderWorldGallery(){
     if(mirror.audioBlob){state.audioUrl=URL.createObjectURL(mirror.audioBlob);memoryAudio.src=state.audioUrl;}
     else if(mirror.musicSrc)memoryAudio.src=mirror.musicSrc;
     $('memory-title').value=mirror.title||''; $('memory-date').value=mirror.date||''; $('memory-description').value=mirror.description||'';
-    $('memory-caption-title').textContent=mirror.title||'未命名记忆'; $('memory-caption-date').textContent=mirror.date||'';
+    $('memory-caption-title').textContent=mirror.title||'未命名记忆'; $('memory-caption-date').textContent=mirror.date||'选择日期';
+    $('memory-caption-title').disabled=viewer;$('memory-caption-date').disabled=viewer;$('memory-caption-date').hidden=viewer&&!mirror.date;$('memory-caption-edit').hidden=true;
     $('memory-index').textContent=String(state.mirrors.indexOf(mirror)+1).padStart(2,'0');
     $('photo-file-name').textContent=mirror.photos?.length?`${mirror.photos.length} 张记忆照片`:'JPG / PNG / WEBP';
     $('audio-file-name').textContent=mirror.musicName||mirror.audioName||'MP3 / WAV / M4A';
@@ -277,6 +278,7 @@ function renderWorldGallery(){
   }
 
   function closeMemory() {
+    $('memory-caption-edit').hidden=true;
     memoryAudio.pause();window.dispatchEvent(new CustomEvent('memory-closed'));memoryView.classList.remove('active','viewer-memory');document.body.classList.remove('memory-open');focusMirror.classList.remove('playing','scanning');
     setTimeout(()=>{memoryView.hidden=true;},620);
   }
@@ -310,21 +312,22 @@ function renderWorldGallery(){
     try{mirror.photos=await Promise.all(mirror.originalPhotos.map(src=>processPhoto(src,mirror.scanStyle)));state.photoIndex=0;updateMemoryImage();showToast('记忆质感已重新生成');}finally{setTimeout(()=>focusMirror.classList.remove('scanning'),2600);}
   }
 
-  function syncEditor(){if(!state.current)return;state.current.title=$('memory-title').value.trim()||'未命名记忆';state.current.date=$('memory-date').value;state.current.description=$('memory-description').value.trim();$('memory-caption-title').textContent=state.current.title;$('memory-caption-date').textContent=state.current.date;}
+  function syncEditor(){if(!state.current)return;state.current.title=$('memory-title').value.trim()||'未命名记忆';state.current.date=$('memory-date').value;state.current.description=$('memory-description').value.trim();$('memory-caption-title').textContent=state.current.title;$('memory-caption-date').textContent=state.current.date||'选择日期';}
 
   function openDatabase(){if(!('indexedDB'in window))return Promise.resolve(null);return new Promise(resolve=>{const request=indexedDB.open('jingmai-world',3);request.onupgradeneeded=()=>{if(!request.result.objectStoreNames.contains('mirrors'))request.result.createObjectStore('mirrors',{keyPath:'id'});if(!request.result.objectStoreNames.contains('worlds'))request.result.createObjectStore('worlds',{keyPath:'id'});if(!request.result.objectStoreNames.contains('echoProjects'))request.result.createObjectStore('echoProjects',{keyPath:'id'});if(!request.result.objectStoreNames.contains('echoAssets'))request.result.createObjectStore('echoAssets',{keyPath:'id'});};request.onsuccess=()=>{request.result.onversionchange=()=>request.result.close();resolve(request.result);};request.onerror=()=>resolve(null);});}
   function mirrorRecord(mirror){const record={};Object.entries(mirror).forEach(([key,value])=>{if(!key.startsWith('_'))record[key]=value;});return record;}
   function persistMirror(mirror){if(!state.db)return Promise.resolve();return new Promise(resolve=>{const tx=state.db.transaction('mirrors','readwrite');tx.objectStore('mirrors').put(mirrorRecord(mirror));tx.oncomplete=resolve;tx.onerror=resolve;});}
   function readPersistedMirrors(){if(!state.db)return Promise.resolve([]);return new Promise(resolve=>{const request=state.db.transaction('mirrors','readonly').objectStore('mirrors').getAll();request.onsuccess=()=>resolve(request.result||[]);request.onerror=()=>resolve([]);});}
 
-function makeWorldRecord(){const previous=state.worlds.find(world=>world.id===state.currentWorldId);return{id:state.currentWorldId,name:state.currentWorldName,ownerRole:previous?worldRole(previous):(document.body.classList.contains('yinli-receiver-mode')?'receiver':'creator'),coverImage:previous?.coverImage||'',createdAt:previous?.createdAt||new Date().toISOString(),updatedAt:new Date().toISOString(),mirrors:state.mirrors.map(mirrorRecord)};}
+function applyWorldScene(scene){const value=['tree','street','galaxy','lake'].includes(scene)?scene:'tree';const selector=$('world-scene-select');if(selector)selector.value=value;window.WorldTree3D?.setScene?.(value);}
+function makeWorldRecord(){const previous=state.worlds.find(world=>world.id===state.currentWorldId);return{id:state.currentWorldId,name:state.currentWorldName,scene:$('world-scene-select')?.value||'tree',ownerRole:previous?worldRole(previous):(document.body.classList.contains('yinli-receiver-mode')?'receiver':'creator'),coverImage:previous?.coverImage||'',createdAt:previous?.createdAt||new Date().toISOString(),updatedAt:new Date().toISOString(),mirrors:state.mirrors.map(mirrorRecord)};}
   function persistWorldRecord(record){if(!state.db)return Promise.resolve();return new Promise(resolve=>{const tx=state.db.transaction('worlds','readwrite');tx.objectStore('worlds').put(record);tx.oncomplete=resolve;tx.onerror=resolve;});}
   function deletePersistedWorld(world){if(!state.db)return Promise.resolve(false);const remaining=new Set(state.worlds.filter(item=>item.id!==world.id).flatMap(item=>(item.mirrors||[]).map(mirror=>mirror.id)));const orphanIds=(world.mirrors||[]).map(mirror=>mirror.id).filter(id=>id&&!remaining.has(id));return new Promise(resolve=>{try{const tx=state.db.transaction(['worlds','mirrors'],'readwrite');tx.objectStore('worlds').delete(world.id);for(const id of orphanIds)tx.objectStore('mirrors').delete(id);tx.oncomplete=()=>resolve(true);tx.onerror=()=>resolve(false);tx.onabort=()=>resolve(false);}catch{resolve(false);}});}
   function readPersistedWorlds(){if(!state.db||!state.db.objectStoreNames.contains('worlds'))return Promise.resolve([]);return new Promise(resolve=>{const request=state.db.transaction('worlds','readonly').objectStore('worlds').getAll();request.onsuccess=()=>resolve(request.result||[]);request.onerror=()=>resolve([]);});}
   function captureWorldCover(){const scene=getCompositeCanvas();if(!scene)return '';const cover=document.createElement('canvas'),scale=Math.min(1,640/scene.width);cover.width=Math.max(1,Math.round(scene.width*scale));cover.height=Math.max(1,Math.round(scene.height*scale));cover.getContext('2d').drawImage(scene,0,0,cover.width,cover.height);try{return cover.toDataURL('image/jpeg',.78);}catch{return '';}}
   async function saveWorld(quiet=false,capture=false){const record=makeWorldRecord(),index=state.worlds.findIndex(world=>world.id===record.id);if(!quiet||capture)record.coverImage=captureWorldCover()||record.coverImage;if(index>=0)state.worlds[index]=record;else state.worlds.push(record);await persistWorldRecord(record);localStorage.setItem('yingji-current-world',record.id);if(!quiet)showToast(`“${record.name}”已保存到我的世界记忆录`);return record;}
   function hydrateMirror(item){const seed=seedMirrors.find(entry=>entry.id===item.id);return{...item,capturePhoto:item.capturePhoto||seed?.capturePhoto,photos:[...(item.photos||[])]};}
-  async function loadWorld(id){const world=state.worlds.find(item=>item.id===id);if(!world)return;retractDockedMemory(false);state.currentWorldId=world.id;state.currentWorldName=world.name;state.mirrors=(world.mirrors||[]).map(hydrateMirror);localStorage.setItem('yingji-current-world',id);renderWorld();}
+  async function loadWorld(id){const world=state.worlds.find(item=>item.id===id);if(!world)return;retractDockedMemory(false);state.currentWorldId=world.id;state.currentWorldName=world.name;state.mirrors=(world.mirrors||[]).map(hydrateMirror);applyWorldScene(world.scene);localStorage.setItem('yingji-current-world',id);renderWorld();}
   async function createBlankYinliWorld(name='新的音礼世界'){
     if(state.previewWorldBackup)restorePreviewWorld();
     if(state.mirrors.length||state.worlds.some(world=>world.id===state.currentWorldId))await saveWorld(true);
@@ -332,6 +335,7 @@ function makeWorldRecord(){const previous=state.worlds.find(world=>world.id===st
     if (!memoryView.hidden) closeMemory();
     state.currentWorldId=worldUid();
     state.currentWorldName=String(name||'新的音礼世界').trim()||'新的音礼世界';
+    applyWorldScene('tree');
     state.mirrors=[];
     state.current=null;
     state.photoIndex=0;
@@ -344,7 +348,7 @@ function makeWorldRecord(){const previous=state.worlds.find(world=>world.id===st
     return state.currentWorldId;
   }
   function openNewWorldPanel(){$('world-name-input').value=state.language==='zh'?'我的音乐世界':'My Music World';$('world-name-panel').hidden=false;setTimeout(()=>$('world-name-input').select(),30);}
-  async function confirmNewWorld(){const name=$('world-name-input').value.trim()||(state.language==='zh'?'未命名世界':'Untitled World');await saveWorld(true);state.currentWorldId=worldUid();state.currentWorldName=name;state.mirrors=[];state.current=null;localStorage.setItem('yingji-current-world',state.currentWorldId);$('world-name-panel').hidden=true;await saveWorld(true);$('archive-view').hidden=true;renderWorld();showToast(`“${name}”已经展开，开始悬挂第一段记忆吧`);}
+  async function confirmNewWorld(){const name=$('world-name-input').value.trim()||(state.language==='zh'?'未命名世界':'Untitled World');await saveWorld(true);state.currentWorldId=worldUid();state.currentWorldName=name;applyWorldScene('tree');state.mirrors=[];state.current=null;localStorage.setItem('yingji-current-world',state.currentWorldId);$('world-name-panel').hidden=true;await saveWorld(true);$('archive-view').hidden=true;renderWorld();showToast(`“${name}”已经展开，开始悬挂第一段记忆吧`);}
 
   async function saveMemory(){if(!state.current)return;syncEditor();state.current.saved=true;await persistMirror(state.current);await saveWorld(true);state.treePulseAt=performance.now();renderWorld();closeMemory();document.body.classList.add('tree-growing');setTimeout(()=>document.body.classList.remove('tree-growing'),1800);showToast('新的枝条正在生长');}
 
@@ -356,12 +360,27 @@ function makeWorldRecord(){const previous=state.worlds.find(world=>world.id===st
   }
 
   async function attachYinliProject(project){
-    const mirror=state.mirrors.find(item=>item.id===project.mirrorId)||state.current;if(!mirror)return null;
-    mirror.yinliProjectId=project.id;mirror.yinliStatus=project.status;mirror.recipient=project.recipient;mirror.mode='yinli';mirror.title=project.title||mirror.title;mirror.description=project.description||mirror.description;mirror.saved=true;
-    project.mirrorId=mirror.id;await persistMirror(mirror);state.treePulseAt=performance.now();renderWorld();await new Promise(requestAnimationFrame);await saveWorld(true,true);return mirror.id;
+    const entries=project.mirrors?.length?project.mirrors:[{id:project.mirrorId}];let first=null;
+    for(const entry of entries){const mirror=state.mirrors.find(item=>item.id===entry.id);if(!mirror)continue;
+      mirror.yinliProjectId=project.id;mirror.yinliStatus=project.status;mirror.recipient=project.recipient;mirror.mode='yinli';mirror.saved=true;
+      if(entry.coverData)mirror.photos=[entry.coverData];if(entry.mediaId)mirror.yinliMediaId=entry.mediaId;
+      first??=mirror.id;await persistMirror(mirror);
+    }
+    if(first){state.treePulseAt=performance.now();renderWorld();await new Promise(requestAnimationFrame);await saveWorld(true,true);}return first;
+  }
+
+  function getYinliMirrors(){return state.mirrors.map(mirror=>({id:mirror.id,x:mirror.x,y:mirror.y,anchorX:mirror.anchorX,anchorY:mirror.anchorY,treeAnchor:mirror.treeAnchor,freeAnchor:mirror.freeAnchor,hang:mirror.hang,rotation:mirror.rotation,size:mirror.size,title:mirror.title,date:mirror.date,description:mirror.description,coverData:mirror.photos?.[0]||''}));}
+  function addYinliMirrorNear(id){
+    const source=state.mirrors.find(mirror=>mirror.id===id);if(!source)return null;
+    const index=state.mirrors.length,offset=.09+Math.floor(index/6)*.035,angle=index*2.39996;
+    const x=clamp(source.x+Math.cos(angle)*offset,.12,.88),y=clamp(source.y+Math.sin(angle)*offset,.14,.79);
+    const used=new Set(state.mirrors.map(mirror=>mirror.treeAnchor).filter(Number.isFinite));let treeAnchor=null,distance=Infinity;
+    for(let candidate=0;candidate<18;candidate++){if(used.has(candidate))continue;const point=window.WorldTree3D?.projectAnchor?.(candidate);if(!point?.visible)continue;const next=Math.hypot(point.x-x,point.y-y);if(next<distance){distance=next;treeAnchor=candidate;}}
+    const mirror={...source,id:uid(),x,y,anchorX:x,anchorY:clamp(y-.14,.11,.72),treeAnchor,freeAnchor:treeAnchor===null,rotation:Math.round((Math.random()-.5)*8),photos:[],yinliMediaId:null};delete mirror._node;delete mirror._line;state.mirrors.push(mirror);renderWorld();return mirror.id;
   }
 
   async function importYinliGift(project){
+    applyWorldScene(project.scene);
     if(state.previewWorldBackup){
       state.previewWorldBackup=null;
       state.currentWorldId=worldUid();
@@ -369,21 +388,23 @@ function makeWorldRecord(){const previous=state.worlds.find(world=>world.id===st
       state.mirrors=[];
       state.current=null;
     }
-    const index=state.mirrors.length,angle=index*1.37;
-    const mirror={id:uid(),x:.5+Math.sin(angle)*.26,y:.36+Math.cos(angle)*.15,anchorX:.5+Math.sin(angle)*.26,anchorY:.22+Math.cos(angle)*.12,hang:.14,rotation:0,size:.96,title:project.title||'收到的音礼',date:new Date().toISOString().slice(0,10),description:project.description||'一份被保存到世界树的音礼。',photos:project.coverData?[project.coverData]:[],scanStyle:'faded',saved:true,mode:'yinli',yinliProjectId:project.id,yinliStatus:'received',recipient:project.recipient};
-    state.mirrors.push(mirror);await persistMirror(mirror);renderWorld();await new Promise(requestAnimationFrame);await saveWorld(true,true);return mirror.id;
+    const entries=project.mirrors?.length?project.mirrors:[{id:'first',x:.5,y:.36,coverData:project.coverData}];let first=null;
+    for(const entry of entries){const mirror={id:uid(),sourceMirrorId:entry.id,x:entry.x??.5,y:entry.y??.36,anchorX:entry.anchorX??entry.x??.5,anchorY:entry.anchorY??.22,treeAnchor:entry.treeAnchor,freeAnchor:entry.freeAnchor,hang:entry.hang??.14,rotation:entry.rotation??0,size:entry.size??.96,title:project.title||'收到的音礼',date:new Date().toISOString().slice(0,10),description:project.description||'',photos:entry.coverData?[entry.coverData]:[],scanStyle:'faded',saved:true,mode:'yinli',yinliMediaId:entry.mediaId,yinliProjectId:project.id,yinliStatus:'received',recipient:project.recipient};state.mirrors.push(mirror);first??=mirror.id;await persistMirror(mirror);}
+    renderWorld();await new Promise(requestAnimationFrame);await saveWorld(true,true);return first;
   }
   function previewYinliGift(project){
     if(state.previewWorldBackup)restorePreviewWorld();
-    state.previewWorldBackup={id:state.currentWorldId,name:state.currentWorldName,mirrors:state.mirrors,current:state.current};
+    state.previewWorldBackup={id:state.currentWorldId,name:state.currentWorldName,scene:$('world-scene-select')?.value,mirrors:state.mirrors,current:state.current};
     state.currentWorldId=`preview-${project.id}`;
     state.currentWorldName=project.title||'收到的音礼';
-    state.mirrors=[{id:`preview-mirror-${project.id}`,x:.43,y:.37,anchorX:.43,anchorY:.23,hang:.14,rotation:0,size:1,title:project.title||'收到的音礼',date:new Date().toISOString().slice(0,10),description:project.description||'',photos:project.coverData?[project.coverData]:[],saved:true,mode:'yinli',yinliProjectId:project.id,yinliStatus:'received',recipient:project.recipient}];
+    applyWorldScene(project.scene);
+    const entries=project.mirrors?.length?project.mirrors:[{id:project.mirrorId||'first',x:.43,y:.37,anchorX:.43,anchorY:.23,coverData:project.coverData}];
+    state.mirrors=entries.map((entry,index)=>({id:`preview-mirror-${project.id}-${index}`,sourceMirrorId:entry.id,x:entry.x??.43,y:entry.y??.37,anchorX:entry.anchorX??entry.x??.43,anchorY:entry.anchorY??.23,treeAnchor:entry.treeAnchor,freeAnchor:entry.freeAnchor,hang:entry.hang??.14,rotation:entry.rotation??0,size:entry.size??1,title:project.title||'收到的音礼',date:new Date().toISOString().slice(0,10),description:project.description||'',photos:entry.coverData?[entry.coverData]:[],saved:true,mode:'yinli',yinliMediaId:entry.mediaId,yinliProjectId:project.id,yinliStatus:'received',recipient:project.recipient}));
     state.current=null;renderWorld();
   }
   function restorePreviewWorld(){
     const backup=state.previewWorldBackup;if(!backup)return;
-    state.currentWorldId=backup.id;state.currentWorldName=backup.name;state.mirrors=backup.mirrors;state.current=backup.current;state.previewWorldBackup=null;renderWorld();
+    state.currentWorldId=backup.id;state.currentWorldName=backup.name;state.mirrors=backup.mirrors;state.current=backup.current;applyWorldScene(backup.scene);state.previewWorldBackup=null;renderWorld();
   }
 
   function exportWorld(){const payload={project:'镜·脉 / 世界树',version:1,savedAt:new Date().toISOString(),mirrors:state.mirrors.map(item=>{const mirror=mirrorRecord(item);delete mirror.audioBlob;delete mirror.originalPhotos;mirror.audioName=mirror.audioName||mirror.musicName||'';return mirror;})};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download=`${safeName('镜脉-我的世界树')}-${new Date().toISOString().slice(0,10)}.json`;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);showToast('你的世界树已保存');}
@@ -482,7 +503,7 @@ function makeWorldRecord(){const previous=state.worlds.find(world=>world.id===st
       const wind=Math.sin(time*(.00048+windForce*.00034)+index*1.73)*(.00012+windForce*.0005)+(state.pointerX-.5)*.00042*proximity;
       mirror._velocity+=(-mirror._angle*.006+wind-mirror._velocity*.045)*step;
       mirror._angle=clamp(mirror._angle+mirror._velocity*step,-.18,.18);
-      const threeAnchor=window.WorldTree3D?.projectAnchor?.(mirror.treeAnchor ?? index);
+      const threeAnchor=mirror.freeAnchor?null:window.WorldTree3D?.projectAnchor?.(mirror.treeAnchor ?? index);
       const sourceX=threeAnchor?.visible?threeAnchor.x:mirror.anchorX;
       const sourceY=threeAnchor?.visible?threeAnchor.y:mirror.anchorY;
       const hang=window.WorldTree3D?.active ? .085 : mirror.hang;
@@ -710,6 +731,9 @@ if(action==='archive'){state.archiveRole=document.body.classList.contains('yinli
     $('photo-input').addEventListener('change',event=>{const files=[...event.target.files].filter(file=>file.type.startsWith('image/'));scanFiles(files);event.target.value='';});
     $('memory-audio-input').addEventListener('change',event=>{const file=event.target.files[0];if(!file||!state.current)return;if(state.audioUrl)URL.revokeObjectURL(state.audioUrl);state.current.audioBlob=file;state.current.audioName=file.name;state.current.musicName=file.name.replace(/\.[^.]+$/,'');state.current.musicSrc='';state.audioUrl=URL.createObjectURL(file);memoryAudio.src=state.audioUrl;$('audio-file-name').textContent=file.name;showToast('音乐已进入这面镜子');event.target.value='';});
     ['memory-title','memory-date','memory-description'].forEach(id=>$(id).addEventListener('input',syncEditor));
+    ['memory-caption-title','memory-caption-date'].forEach(id=>$(id).addEventListener('click',()=>{if(document.body.classList.contains('yinli-receiver-mode')||!state.current)return;$('memory-caption-title-input').value=state.current.title||'';$('memory-caption-date-input').value=state.current.date||'';$('memory-caption-edit').hidden=false;$(id==='memory-caption-title'?'memory-caption-title-input':'memory-caption-date-input').focus();}));
+    $('memory-caption-save').addEventListener('click',async()=>{if(!state.current||document.body.classList.contains('yinli-receiver-mode'))return;$('memory-title').value=$('memory-caption-title-input').value;$('memory-date').value=$('memory-caption-date-input').value;syncEditor();$('memory-caption-edit').hidden=true;await persistMirror(state.current);await saveWorld(true);await window.YinliStudio?.saveProject?.();});
+    $('memory-caption-edit').addEventListener('keydown',event=>{if(event.key==='Escape'){$('memory-caption-edit').hidden=true;event.stopPropagation();}if(event.key==='Enter'){event.preventDefault();$('memory-caption-save').click();}});
     $$('.memory-states button').forEach(button=>button.addEventListener('click',()=>{if(!state.current)return;state.current.scanStyle=button.dataset.scan;$$('.memory-states button').forEach(item=>item.classList.toggle('active',item===button));if(state.current.originalPhotos?.length)rescanCurrent();}));
     $$('.particle-modes button').forEach(button=>button.addEventListener('click',()=>{state.particleMode=button.dataset.particleMode;$$('.particle-modes button').forEach(item=>item.classList.toggle('active',item===button));}));
     $('particle-response').addEventListener('input',event=>{state.particleResponse=Number(event.target.value)/100;$('particle-response-value').textContent=`${event.target.value}%`;});
@@ -722,7 +746,6 @@ if(action==='archive'){state.archiveRole=document.body.classList.contains('yinli
     window.addEventListener('keydown',event=>{if(event.key==='Escape'&&state.placing)cancelPlacement();else if(event.key==='Escape'&&!$('world-name-panel').hidden)$('world-name-panel').hidden=true;else if(event.key==='Escape'&&!$('tutorial-panel').hidden)$('tutorial-panel').hidden=true;else if(event.key==='Escape'&&!$('capture-panel').hidden)$('capture-panel').hidden=true;else if(event.key==='Escape'&&!$('archive-view').hidden)$('archive-view').hidden=true;else if(event.key==='Escape'&&!memoryView.hidden)closeMemory();});
   }
 
-  async function init(){state.db=await openDatabase();state.worlds=await readPersistedWorlds();if(state.worlds.length){const active=state.worlds.find(world=>world.id===state.currentWorldId)||state.worlds[0];state.currentWorldId=active.id;state.currentWorldName=active.name;state.mirrors=(active.mirrors||[]).map(hydrateMirror);}else if(localStorage.getItem('yingji-worlds-cleared')==='1'){state.currentWorldId=worldUid();state.currentWorldName='新的世界';state.mirrors=[];localStorage.removeItem('yingji-current-world');}else{const persisted=await readPersistedMirrors();persisted.forEach(saved=>{const index=state.mirrors.findIndex(item=>item.id===saved.id);if(index>=0)state.mirrors[index]=hydrateMirror({...state.mirrors[index],...saved});else state.mirrors.push(hydrateMirror(saved));});if(state.mirrors.length)await saveWorld(true);}buildTreeParticles();updateCamera();renderWorld();bindEvents();applyTheme();applyLanguage();resetWind();resetEnvironment();requestAnimationFrame(animateWind);requestAnimationFrame(animateEnvironment);requestAnimationFrame(animateWorldTree);requestAnimationFrame(animateMemoryParticles);window.YingjiApp={captureComposite:getCompositeCanvas,attachEchoProject,attachYinliProject,importYinliGift,previewYinliGift,createBlankYinliWorld,showTutorial(){ $('tutorial-panel').hidden=false; },get worlds(){return state.worlds;},get currentWorld(){return state.currentWorldId;},get currentMirror(){return state.current;},get mirrorCount(){return state.mirrors.length;}};if(!new URLSearchParams(location.search).has('gift'))$('tutorial-panel').hidden=false;}
+  async function init(){state.db=await openDatabase();state.worlds=await readPersistedWorlds();if(state.worlds.length){const active=state.worlds.find(world=>world.id===state.currentWorldId)||state.worlds[0];state.currentWorldId=active.id;state.currentWorldName=active.name;state.mirrors=(active.mirrors||[]).map(hydrateMirror);}else if(localStorage.getItem('yingji-worlds-cleared')==='1'){state.currentWorldId=worldUid();state.currentWorldName='新的世界';state.mirrors=[];localStorage.removeItem('yingji-current-world');}else{const persisted=await readPersistedMirrors();persisted.forEach(saved=>{const index=state.mirrors.findIndex(item=>item.id===saved.id);if(index>=0)state.mirrors[index]=hydrateMirror({...state.mirrors[index],...saved});else state.mirrors.push(hydrateMirror(saved));});if(state.mirrors.length)await saveWorld(true);}buildTreeParticles();updateCamera();applyWorldScene(state.worlds.find(world=>world.id===state.currentWorldId)?.scene);renderWorld();bindEvents();applyTheme();applyLanguage();resetWind();resetEnvironment();requestAnimationFrame(animateWind);requestAnimationFrame(animateEnvironment);requestAnimationFrame(animateWorldTree);requestAnimationFrame(animateMemoryParticles);window.YingjiApp={captureComposite:getCompositeCanvas,attachEchoProject,attachYinliProject,importYinliGift,previewYinliGift,createBlankYinliWorld,getYinliMirrors,addYinliMirrorNear,showTutorial(){ $('tutorial-panel').hidden=false; },get worlds(){return state.worlds;},get currentWorld(){return state.currentWorldId;},get currentMirror(){return state.current;},get mirrorCount(){return state.mirrors.length;}};if(!new URLSearchParams(location.search).has('gift'))$('tutorial-panel').hidden=false;}
   init();
 })();
-
