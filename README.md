@@ -14,3 +14,5 @@
 
 GitHub Pages 只提供静态页面：同一浏览器可以创建、保存并再次打开本机记忆，但无法承载跨设备的图片、视频和音乐礼物。不要把 Pages 上显示的本机预览码当成可分享链接。
 
+如需启用静态预览，在仓库 `Settings → Pages → Build and deployment → Source` 选择 `GitHub Actions`，随后在 Actions 中重新运行 `Deploy static preview`。网站将发布在 `https://aobitou.github.io/Yinli/`。这个地址的本机预览码只在同一浏览器的同一网址下有效。
+
