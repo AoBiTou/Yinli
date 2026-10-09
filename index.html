@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#020306">
+  <title>音礼 · 把一段声音，送成一整个世界</title>
+  <link rel="stylesheet" href="./styles.css?v=20261008-worlds">
+  <link rel="stylesheet" href="./yinli.css?v=20261008-single-flow">
+<link rel="stylesheet" href="yinli-polish.css">
+</head>
+<body>
+  <canvas id="wind-canvas" aria-hidden="true"></canvas>
+  <div class="thermal-cursor" aria-hidden="true"></div>
+
+  <section id="entry" class="entry yinli-landing" aria-label="音礼介绍网站">
+    <div class="entry-stars" aria-hidden="true"></div>
+    <nav class="landing-nav">
+      <a class="landing-brand" href="#landing-top"><b>音礼</b><small>YIN LI</small></a>
+      <div><a href="#landing-story">什么是音礼</a><a href="#landing-flow">如何创作</a><a href="#landing-scenes">礼物示例</a></div>
+      <button type="button" data-yinli-entry="create">创作一份记忆</button>
+    </nav>
+    <div class="landing-scroll">
+      <section id="landing-top" class="landing-hero">
+        <div class="landing-hero-copy">
+          <span>AN AUDIO GIFT, A LIVING WORLD</span>
+          <h1>把一段声音，<br>送成一整个世界。</h1>
+          <p>用音乐、影像和文字编织一份可以被反复打开的记忆礼物。</p>
+          <div class="landing-cta-row">
+            <button type="button" class="landing-primary" data-yinli-entry="create">创作一份记忆</button>
+            <button type="button" class="landing-secondary" data-yinli-entry="open">打开一份记忆</button>
+          </div>
+          <button id="enter-world" class="landing-world-link" type="button" hidden>进入我的世界 <span>→</span></button>
+          <div id="entry-loader" class="entry-loader" role="status" aria-live="polite"><span><i id="entry-load-progress"></i></span><small id="entry-load-label">正在读取树的拓扑</small></div>
+        </div>
+        <div class="landing-demo" aria-label="由现有大树模型生成的粒子树预览">
+          <canvas id="landing-tree-particles" aria-hidden="true"></canvas>
+          <div class="landing-tree-caption"><small>FBX PARTICLE WORLD</small><b>每一段记忆，都落在树的深处</b></div>
+        </div>
+      </section>
+      <section id="landing-story" class="landing-section landing-story">
+        <small>WHAT IS YIN LI</small><h2>记忆不只被观看，<br>也可以被进入。</h2>
+        <div class="landing-feature-grid"><article><b>01</b><h3>一棵属于你们的树</h3><p>照片、视频与声音被悬挂在世界树上，成为可以再次抵达的记忆坐标。</p></article><article><b>02</b><h3>像剪辑，也像布置空间</h3><p>在场景中拖动影像，在时间轴上编排音乐、文字和每一次出现。</p></article><article><b>03</b><h3>送出以后随时重看</h3><p>打开礼物的人可以完整观看、自由回看，并把它保存到自己的世界。</p></article></div>
+      </section>
+      <section id="landing-flow" class="landing-section landing-flow">
+        <small>HOW IT WORKS</small><h2>四步，编织一份音礼</h2>
+        <div class="landing-flow-paths"><article><b>创作者</b><ol><li><span>选对象，开启空白世界</span><small>给家人、朋友、恋人或自己创建一份音礼。</small></li><li><span>悬挂影像，编排时间</span><small>在树上放入照片或视频，在下方时间线上加入音乐与字幕。</small></li><li><span>试听并送出</span><small>调整片段时长，完整试听，再生成可打开的礼物链接。</small></li></ol></article><article><b>打开回忆的人</b><ol><li><span>打开收到的链接</span><small>进入对方编织的世界，观看完整记忆。</small></li><li><span>自由探索和回看</span><small>点开树上的照片，在中央玻璃里观看；底部可拖动进度。</small></li><li><span>保存到自己的世界</span><small>想再次抵达时，把这份音礼保存到世界树。</small></li></ol></article></div>
+      </section>
+      <section id="landing-scenes" class="landing-section landing-scenes">
+        <small>FOR EVERY RELATIONSHIP</small><h2>你想把这份记忆，送给谁？</h2>
+        <div><button data-yinli-entry="create" data-recipient="family"><i>家</i><b>家人</b><span>把岁月重新说一遍</span></button><button data-yinli-entry="create" data-recipient="friend"><i>友</i><b>朋友</b><span>保存一起经过的地方</span></button><button data-yinli-entry="create" data-recipient="lover"><i>爱</i><b>恋人</b><span>让共同的歌再次响起</span></button><button data-yinli-entry="create" data-recipient="self"><i>我</i><b>自己</b><span>写给过去与未来的自己</span></button></div>
+      </section>
+      <section class="landing-final"><small>READY TO BEGIN</small><h2>开始编织你的第一份音礼</h2><button type="button" data-yinli-entry="create">创作一份记忆</button></section>
+      <footer class="landing-footer"><div><b>音礼</b><span>把一段声音，送成一整个世界。</span></div><div><a href="#landing-story">产品介绍</a><a href="#landing-flow">创作流程</a><a href="#landing-scenes">礼物示例</a></div><small>本地创作版本 · 素材默认保存在你的浏览器</small></footer>
+    </div>
+    <div id="yinli-entry-dialog" class="yinli-entry-dialog" hidden>
+      <button type="button" class="dialog-close" data-yinli-close>×</button>
+      <section id="creator-entry" hidden><small>CREATE A MEMORY</small><h2>这份记忆，想送给谁？</h2><div class="recipient-grid"><button data-recipient="family"><b>家人</b><span>时间与陪伴</span></button><button data-recipient="friend"><b>朋友</b><span>同行与冒险</span></button><button data-recipient="lover"><b>恋人</b><span>心动与纪念</span></button><button data-recipient="self"><b>自己</b><span>成长与未来</span></button></div><label>给这份音礼一个名字<input id="yinli-project-name" maxlength="60" placeholder="例如：我们一起走过的夏天"></label><button class="dialog-primary" data-yinli-start-create>进入世界树开始创作</button></section>
+      <section id="receiver-entry" hidden><small>OPEN A MEMORY</small><h2>打开一份音礼</h2><p>粘贴发送者给你的礼物链接，进入对方编织的记忆世界。</p><label>音礼链接或礼物码<input id="yinli-gift-link" placeholder="https://…/gift/XXXXXX"></label><button class="dialog-primary" data-yinli-open-gift>打开这份音礼</button><p id="yinli-open-status" class="dialog-status"></p></section>
+    </div>
+  </section>
+
+  <main id="world-view" class="world-view" aria-label="世界树场景">
+    <header class="world-nav ui-layer">
+      <button class="wordmark world-brand" data-action="home" aria-label="音礼世界首页"><b>音礼</b><small>YIN LI WORLD</small></button>
+      <div class="nav-actions">
+        <button id="weather-toggle" class="quiet-button compact-control" data-action="weather" data-i18n="weatherClear">晴朗 · 微风</button>
+        <button id="theme-toggle" class="icon-button" data-action="theme" aria-label="切换黑夜模式" title="昼夜模式">
+          <svg viewBox="0 0 24 24"><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"/></svg>
+        </button>
+        <button id="language-toggle" class="quiet-button language-toggle" data-action="language">EN</button>
+        <button class="icon-button" data-action="tutorial" aria-label="使用教程" title="使用教程">?</button>
+        <button class="icon-button" data-action="fullscreen" aria-label="全屏">
+          <svg viewBox="0 0 24 24"><path d="M8 4H4v4M16 4h4v4M20 16v4h-4M8 20H4v-4"/></svg>
+        </button>
+        <button class="icon-button viewer-camera" data-action="camera-panel" aria-label="场景相机" title="场景相机">◎</button>
+        <button class="quiet-button" data-action="archive" data-i18n="myWorldMemories">我的世界记忆录</button>
+        <button class="icon-button viewer-exit" data-action="viewer-exit" aria-label="退出全屏" title="退出全屏">↙</button>
+        <button class="quiet-button landing-return" data-action="return-landing">返回介绍页</button>
+      </div>
+    </header>
+
+    <div id="world-camera" class="world-camera">
+      <div id="world-stage" class="world-stage">
+        <div class="cosmic-haze" aria-hidden="true"></div>
+        <div class="forest-scene" aria-hidden="true"></div>
+        <div class="scene-depth" aria-hidden="true"></div>
+        <div id="three-world" class="three-world" aria-label="FBX 粒子世界树"></div>
+        <canvas id="environment-canvas" class="environment-canvas" aria-label="天气与树下环境"></canvas>
+        <canvas id="world-tree-canvas" class="world-tree-canvas" aria-label="粒子世界树"></canvas>
+        <svg id="tree-lines" class="tree-lines" viewBox="0 0 1600 1000" preserveAspectRatio="none" aria-hidden="true">
+          <g id="fishline-layer"></g>
+        </svg>
+        <div id="mirror-layer" class="mirror-layer"></div>
+      </div>
+    </div>
+
+    <div id="place-hint" class="place-hint ui-layer" hidden>
+      <span data-i18n="chooseBranch">选择一处枝桠</span>
+      <b data-i18n="placeHint">点击树的范围，悬挂一段记忆</b>
+      <button data-action="cancel-place" data-i18n="cancel">取消</button>
+    </div>
+
+    <div class="world-actions ui-layer">
+      <button class="primary-action" data-action="plant"><i>＋</i><span data-i18n="hangMemory">悬挂一段记忆</span></button>
+      <button class="quiet-button camera-export" data-action="camera-panel"><svg viewBox="0 0 24 24"><path d="M4 7h4l2-2h4l2 2h4v11H4zM12 10a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg><span data-i18n="camera">相机</span></button>
+      <button class="quiet-button" data-action="new-world" data-i18n="newWorld">新建世界</button>
+      <button class="quiet-button" data-action="save-world" data-i18n="saveWorld">保存世界</button>
+    </div>
+    <span id="zoom-value" hidden>100%</span>
+  </main>
+
+  <section id="world-player" class="world-player ui-layer" hidden aria-label="主页音乐播放条">
+    <button class="player-cover" data-action="toggle-docked" aria-label="播放或暂停"><img id="world-player-image" alt=""><i></i></button>
+    <div class="player-copy"><b id="world-player-title">未命名记忆</b><small id="world-player-subtitle">悬挂的音乐记忆</small></div>
+    <button class="player-toggle" data-action="toggle-docked" aria-label="播放或暂停"><svg class="play-icon" viewBox="0 0 24 24"><path d="m9 7 8 5-8 5Z"/></svg><svg class="pause-icon" viewBox="0 0 24 24"><path d="M9 7v10M15 7v10"/></svg></button>
+    <div class="player-track"><i id="world-player-progress"></i></div><time id="world-player-time">00:00</time>
+    <button class="player-return" data-action="retract-memory" data-i18n="returnMemory">收回树上</button>
+  </section>
+
+  <section id="memory-view" class="memory-view" hidden aria-label="镜子记忆空间">
+    <button class="memory-back ui-layer" data-action="back-world" aria-label="返回世界树">
+      <svg viewBox="0 0 24 24"><path d="m10 6-6 6 6 6M4 12h16"/></svg>
+    </button>
+
+    <div class="memory-atmosphere" aria-hidden="true"></div>
+    <div class="memory-rig">
+      <i class="rig-line left"></i>
+      <div id="focus-mirror" class="focus-mirror">
+        <img id="memory-image" alt="记忆照片">
+        <canvas id="memory-particles" aria-label="镜内音乐粒子"></canvas>
+        <div class="mirror-sheen" aria-hidden="true"></div>
+        <div class="scan-beam" aria-hidden="true"></div>
+        <span id="scan-status" class="scan-status">等待记忆</span>
+        <button id="photo-cycle" class="photo-cycle" type="button" aria-label="切换照片" hidden>01 / 01</button>
+      </div>
+      <div class="memory-caption"><b id="memory-caption-title">未命名记忆</b><span id="memory-caption-date"></span></div>
+    </div>
+
+    <aside id="memory-editor" class="memory-editor ui-layer" aria-label="编辑这段记忆">
+      <div class="editor-heading"><span>MEMORY / <b id="memory-index">05</b></span><button data-action="close-editor" aria-label="收起编辑">—</button></div>
+
+      <div class="paired-uploads">
+        <label class="memory-upload" for="photo-input">
+          <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM7 15l3-3 2 2 2-2 3 3M9 9h.01"/></svg>
+          <b data-i18n="uploadPhoto">上传图片</b><small id="photo-file-name">JPG / PNG / WEBP</small>
+        </label>
+        <label class="memory-upload" for="memory-audio-input">
+          <svg viewBox="0 0 24 24"><path d="M9 18V6l9-2v12M6.5 20a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM15.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/></svg>
+          <b data-i18n="addMusic">添加音乐</b><small id="audio-file-name">MP3 / WAV / M4A</small>
+        </label>
+      </div>
+
+      <div class="memory-states">
+        <span data-i18n="memoryState">记忆状态</span>
+        <div>
+          <button class="active" data-scan="faded" data-i18n="faded">时间褪色</button>
+          <button data-scan="film" data-i18n="film">胶片</button>
+          <button data-scan="archive" data-i18n="archiveStyle">档案</button>
+          <button data-scan="dream" data-i18n="dream">梦</button>
+        </div>
+      </div>
+
+      <div class="particle-controls">
+        <div class="particle-heading"><span data-i18n="particleMotion">粒子波动</span><small data-i18n="followMusic">跟随音乐</small></div>
+        <div class="particle-modes" role="group" aria-label="粒子波动形式">
+          <button class="active" data-particle-mode="terrain"><i>╱╱</i><span>地形</span></button>
+          <button data-particle-mode="orb"><i>◌</i><span>织球</span></button>
+          <button data-particle-mode="veil"><i>⌒</i><span>流幕</span></button>
+          <button data-particle-mode="breath"><i>◯</i><span>呼吸</span></button>
+          <button data-particle-mode="spectrum"><i>▥</i><span>频谱</span></button>
+        </div>
+        <label class="particle-slider"><span data-i18n="musicResponse">音乐响应</span><b id="particle-response-value">68%</b><input id="particle-response" type="range" min="0" max="100" value="68"></label>
+        <label class="particle-slider"><span data-i18n="particleDensity">粒子密度</span><b id="particle-density-value">78%</b><input id="particle-density" type="range" min="28" max="100" value="78"></label>
+      </div>
+
+      <div class="archive-fields">
+        <label><span data-i18n="title">标题</span><input id="memory-title" type="text" maxlength="36" placeholder="那年冬天"></label>
+        <label><span data-i18n="date">日期</span><input id="memory-date" type="date"></label>
+        <label class="description-field"><span data-i18n="description">描述</span><textarea id="memory-description" rows="3" maxlength="180" placeholder="把那天没有说完的话留在这里。"></textarea></label>
+      </div>
+
+      <div class="editor-actions">
+        <button class="text-action" data-action="rescan" data-i18n="rescan">重新扫描</button>
+        <button class="save-memory" data-action="save-memory"><span data-i18n="saveToTree">存入世界树</span><svg viewBox="0 0 24 24"><path d="m5 12 4 4 10-10"/></svg></button>
+      </div>
+    </aside>
+  </section>
+
+  <section id="archive-view" class="archive-view" hidden aria-label="世界树档案">
+    <header>
+      <button class="memory-back" data-action="close-archive" aria-label="返回世界树"><svg viewBox="0 0 24 24"><path d="m10 6-6 6 6 6M4 12h16"/></svg></button>
+      <div><small id="archive-kicker">WORLD MEMORY ARCHIVE</small><h2 data-i18n="myWorldMemories">我的世界记忆录</h2></div>
+      <span id="archive-count"><b>04</b><small>已收录 4 段音乐记忆</small></span>
+    </header>
+    <div id="world-gallery" class="world-gallery" aria-label="世界记忆列表"></div>
+  </section>
+
+  <section id="world-name-panel" class="modal-panel world-name-panel ui-layer" hidden aria-label="新建世界">
+    <button class="panel-close" data-action="close-world-panel" aria-label="关闭">×</button>
+    <small>NEW MEMORY WORLD</small><h2 data-i18n="nameYourWorld">给新的世界取一个名字</h2>
+    <label><span data-i18n="worldName">世界名称</span><input id="world-name-input" maxlength="28" value="我的音乐世界"></label>
+    <button class="world-create-confirm" data-action="confirm-new-world" data-i18n="createWorld">开始新的世界</button>
+  </section>
+
+  <section id="tutorial-panel" class="modal-panel tutorial-panel ui-layer" hidden aria-label="使用教程">
+    <button class="panel-close" data-action="close-tutorial" aria-label="关闭">×</button>
+    <small>HOW TO EXPERIENCE</small><h2 data-i18n="tutorialTitle">在风中保存一段记忆</h2>
+    <div class="tutorial-paths"><section class="tutorial-creator"><h3>创作者怎么开始</h3><ol><li>在介绍页选择送给谁，进入一棵空白世界树。</li><li>点击“悬挂一段记忆”，上传照片或视频；再次点击树上的照片可更换影像。</li><li>在底部时间线加入音乐、字幕，拖动片段位置与边缘调整秒数，试听后送出链接。</li></ol></section><section class="tutorial-receiver"><h3>收到音礼怎么观看</h3><ol><li>打开收到的音礼后，先正常进入世界；需要时可选择全屏观看。</li><li>点击树上的照片，在中央玻璃查看；播放不会因此中断，底部进度条可回看。</li><li>可使用相机留存画面，并把音礼保存到自己的世界。</li></ol><button class="tutorial-fullscreen" type="button" data-action="viewer-fullscreen">推荐全屏观看</button></section></div>
+  </section>
+
+  <section id="capture-panel" class="capture-panel ui-layer" hidden aria-label="场景相机">
+    <button class="panel-close" data-action="close-camera-panel" aria-label="关闭">×</button>
+    <small>SCENE CAMERA</small><h3 data-i18n="chooseAngle">拖动场景选择拍摄角度</h3>
+    <div><button data-action="capture-png">PNG</button><button data-action="capture-jpg">JPG</button><button id="record-scene" data-action="record-scene" data-i18n="recordMemory">录制回忆</button></div>
+  </section>
+
+  <input id="photo-input" type="file" accept="image/jpeg,image/png,image/webp" multiple hidden>
+  <input id="memory-audio-input" type="file" accept="audio/*" hidden>
+  <audio id="memory-audio" preload="metadata"></audio>
+  <div id="toast" class="toast" role="status" hidden></div>
+
+  <script src="./vendor/three/three.min.js"></script>
+  <script src="./vendor/three/OrbitControls.js"></script>
+  <script src="./assets/models/tree-points.js"></script>
+  <script src="./landing-particles.js?v=20261008"></script>
+  <script src="./three-scene.js?v=20261008-worlds"></script>
+  <script src="./app.js?v=20261008-world-cover"></script>
+  <script src="./yinli-studio.js?v=20261008-single-flow"></script>
+</body>
+</html>
+

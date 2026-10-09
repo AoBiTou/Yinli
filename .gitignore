@@ -1,0 +1,16 @@
+.yinli-data/
+qa-output/
+tmp/
+qa*.png
+qa*.cjs
+original-index.html
+echo-*.js
+echo.css
+assets/music/
+assets/covers/
+assets/fonts/
+assets/video/
+*.zip
+dist/
+node_modules/
+

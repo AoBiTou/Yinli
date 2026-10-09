@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: yinli
+    runtime: node
+    plan: 0.5c-512mb
+    buildCommand: npm install --omit=dev
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      - key: YINLI_DATA_DIR
+        value: /var/data
+      - key: NODE_VERSION
+        value: 22
+    disk:
+      name: yinli-gifts
+      mountPath: /var/data
+      sizeGB: 1
+

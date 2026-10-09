@@ -1,0 +1,35 @@
+name: Deploy static preview
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare static preview
+        run: |
+          mkdir -p _site/assets/models _site/assets/scene _site/vendor/three
+          cp index.html styles.css yinli.css yinli-polish.css app.js yinli-studio.js landing-particles.js three-scene.js _site/
+          cp assets/models/tree-points.js _site/assets/models/
+          cp assets/scene/mirror-forest.png _site/assets/scene/
+          cp vendor/three/three.min.js vendor/three/OrbitControls.js _site/vendor/three/
+          touch _site/.nojekyll
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
